@@ -1,9 +1,8 @@
-package com.peterchege.pussycatapp.core.api
+package com.peterchege.pussycatapp.domain.repository
 
 import com.peterchege.pussycatapp.core.api.responses.RandomImageResponse
-import retrofit2.http.GET
 
-interface CatApi {
-    @GET("images/search")
+interface ImageRepository {
+
     suspend fun getRandomImage():RandomImageResponse
 }

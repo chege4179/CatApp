@@ -37,7 +37,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = "1.4.2"
     }
     packagingOptions {
         resources {
@@ -47,19 +47,19 @@ android {
 }
 
 dependencies {
-    val compose_version = "1.2.0"
-    implementation ("androidx.core:core-ktx:1.7.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation ("androidx.activity:activity-compose:1.3.1")
-    implementation ("androidx.compose.ui:ui:$compose_version")
-    implementation ("androidx.compose.ui:ui-tooling-preview:$compose_version")
-    implementation ("androidx.compose.material3:material3:1.0.0-alpha11")
+    val compose_version = "1.4.2"
+    implementation ("androidx.core:core-ktx:1.9.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation ("androidx.activity:activity-compose:1.6.1")
+    implementation ("androidx.compose.ui:ui:1.4.0-beta01")
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.4.0-beta01")
+    implementation ("androidx.compose.material3:material3:1.1.0-alpha06")
     testImplementation ("junit:junit:4.13.2")
     androidTestImplementation ("androidx.test.ext:junit:1.1.5")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:$compose_version")
-    debugImplementation ("androidx.compose.ui:ui-tooling:$compose_version")
-    debugImplementation ("androidx.compose.ui:ui-test-manifest:$compose_version")
+    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.4.0-beta01")
+    debugImplementation ("androidx.compose.ui:ui-tooling:1.4.0-beta01")
+    debugImplementation ("androidx.compose.ui:ui-test-manifest:1.4.0-beta01")
 
 
     // retrofit
