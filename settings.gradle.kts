@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "PussyCatApp"
-include ':app'
+include (":app")

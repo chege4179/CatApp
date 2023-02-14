@@ -1,4 +1,4 @@
-package com.peterchege.pussycatapp.ui.theme
+package com.peterchege.pussycatapp.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
