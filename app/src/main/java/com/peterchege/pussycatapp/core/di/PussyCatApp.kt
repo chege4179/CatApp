@@ -13,9 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.util
+package com.peterchege.pussycatapp.core.di
 
-object Screens {
+import android.app.Application
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
-    const val HOME_SCREEN = "HOME_SCREEN"
+class PussyCatApp :Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin{
+            androidLogger()
+            androidContext(this@PussyCatApp)
+            modules(appModules)
+        }
+    }
+
 }

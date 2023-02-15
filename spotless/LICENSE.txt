@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Pussy Cat App By Peter Chege
+ * Copyright $YEAR Pussy Cat App By Peter Chege
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.util
-
-object Screens {
-
-    const val HOME_SCREEN = "HOME_SCREEN"
-}
