@@ -13,17 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.domain.use_case
+package com.peterchege.pussycatapp.core.api.responses.random_cat_response
 
-import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
-import com.peterchege.pussycatapp.domain.repository.ImageRepository
-
-class GetRandomImageUseCase(
-    private val repository: ImageRepository
-) {
-
-
-    suspend operator fun invoke(): RandomImageResponse {
-        return repository.getRandomImage()
-    }
-}
+class RandomImageResponse : ArrayList<RandomImageResponseItem>()

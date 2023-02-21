@@ -17,6 +17,9 @@ package com.peterchege.pussycatapp.presentation.screens.home_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,11 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
+import com.peterchege.pussycatapp.presentation.components.CatBreedCard
 import org.koin.androidx.compose.getViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 @Composable
 fun HomeScreen(
     navController: NavController
@@ -37,38 +42,23 @@ fun HomeScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            SubcomposeAsyncImage(
-                model = viewModel.randomImage.value?.url,
-                loading = {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(
-                                Alignment.Center
-                            )
-                        )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+        ){
+            items(items = viewModel.catBreeds.value){ breed ->
+                CatBreedCard(
+                    catBreed = breed,
+                    onNavigateToBreedScreen ={
+
                     }
-                },
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-                contentDescription = "Cat Images"
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
-                onClick = { 
-                    viewModel.getRandomImage()
-                }) {
-                Text(text = "Generate Random Image")
-                
+                )
+
             }
+
         }
-        
 
     }
 

@@ -19,6 +19,9 @@ import com.peterchege.pussycatapp.core.api.CatApi
 import com.peterchege.pussycatapp.core.util.Constants
 import com.peterchege.pussycatapp.data.ImageRepositoryImpl
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
+import com.peterchege.pussycatapp.domain.use_case.GetCatBreedsUseCase
+import com.peterchege.pussycatapp.domain.use_case.GetCatsByBreedUseCase
+import com.peterchege.pussycatapp.presentation.screens.cat_breed_screen.CatBreedScreenViewModel
 import com.peterchege.pussycatapp.presentation.screens.home_screen.HomeScreenViewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -40,9 +43,20 @@ val appModules = module {
         ImageRepositoryImpl(get())
 
     }
+    single {
+        GetCatBreedsUseCase(get())
+    }
+    single {
+        GetCatsByBreedUseCase(get())
+    }
 
     viewModel {
         HomeScreenViewModel(get())
+    }
+
+    viewModel {
+        CatBreedScreenViewModel(get(),get())
+
     }
 
 

@@ -15,15 +15,15 @@
  */
 package com.peterchege.pussycatapp.domain.use_case
 
-import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
+import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
 
-class GetRandomImageUseCase(
+class GetCatsByBreedUseCase(
     private val repository: ImageRepository
 ) {
-
-
-    suspend operator fun invoke(): RandomImageResponse {
-        return repository.getRandomImage()
+    suspend operator fun invoke(breedId:String):CatsByBreedResponse{
+        return repository.getCatsByBreed(limit = 20, breedId = breedId)
     }
+
+
 }

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.api.responses
+package com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response
 
-data class RandomImageResponseItem(
+data class CatsByBreedResponseItem(
+    val breeds: List<Breed>,
     val height: Int,
     val id: String,
     val url: String,

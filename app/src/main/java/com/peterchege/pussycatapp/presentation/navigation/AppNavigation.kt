@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.peterchege.pussycatapp.core.util.Screens
+import com.peterchege.pussycatapp.presentation.screens.cat_breed_screen.CatBreedScreen
 import com.peterchege.pussycatapp.presentation.screens.home_screen.HomeScreen
 
 @Composable
@@ -31,8 +32,11 @@ fun AppNavigation(
         navController =navHostController,
         startDestination = Screens.HOME_SCREEN,
     ){
-        composable(Screens.HOME_SCREEN){
+        composable(route = Screens.HOME_SCREEN){
             HomeScreen(navController = navHostController)
+        }
+        composable(route = Screens.CAT_BREED_SCREEN + "/{id}"){
+            CatBreedScreen(navController = navHostController)
         }
 
     }

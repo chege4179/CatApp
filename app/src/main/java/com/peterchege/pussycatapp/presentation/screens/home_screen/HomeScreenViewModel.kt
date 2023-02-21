@@ -19,30 +19,28 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.peterchege.pussycatapp.core.api.responses.RandomImageResponse
-import com.peterchege.pussycatapp.core.api.responses.RandomImageResponseItem
+import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.Breed
+import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponseItem
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
+import com.peterchege.pussycatapp.domain.use_case.GetCatBreedsUseCase
 import kotlinx.coroutines.launch
 import org.koin.core.KoinApplication.Companion.init
 
 class HomeScreenViewModel(
-    private val imageRepository: ImageRepository,
+    private val getCatBreedsUseCase: GetCatBreedsUseCase,
 ) : ViewModel() {
-
-
-    val _randomImage = mutableStateOf<RandomImageResponseItem?>(null)
-    val randomImage: State<RandomImageResponseItem?> = _randomImage
+    val _catBreeds = mutableStateOf<List<Breed>>(emptyList())
+    val catBreeds :State<List<Breed>> = _catBreeds
 
     init {
-        getRandomImage()
+        getCatBreeds()
     }
 
-    fun getRandomImage(){
+    private fun getCatBreeds(){
         viewModelScope.launch {
-            val response = imageRepository.getRandomImage()
-            if (response.isNotEmpty()){
-                _randomImage.value = response[0]
-            }
+            val response = getCatBreedsUseCase()
+            _catBreeds.value = response
+
         }
     }
 
