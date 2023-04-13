@@ -15,6 +15,9 @@
  */
 package com.peterchege.pussycatapp.core.api.responses.random_cat_response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RandomImageResponseItem(
     val height: Int,
     val id: String,

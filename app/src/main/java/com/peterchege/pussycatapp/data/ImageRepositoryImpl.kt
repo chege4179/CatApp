@@ -15,17 +15,14 @@
  */
 package com.peterchege.pussycatapp.data
 
-import android.util.Log
-import com.peterchege.pussycatapp.core.api.CatApi
+import com.peterchege.pussycatapp.core.api.CatService
 import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreedsResponse
 import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
-import retrofit2.HttpException
-import java.io.IOException
 
 class ImageRepositoryImpl(
-    private val api: CatApi,
+    private val api: CatService,
 ) : ImageRepository {
 
 

@@ -18,22 +18,14 @@ package com.peterchege.pussycatapp.core.api
 import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreedsResponse
 import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
-import com.peterchege.pussycatapp.core.util.Constants
-import retrofit2.http.GET
-import retrofit2.http.Query
 
-interface CatApi {
-    @GET("images/search")
+interface CatService {
+
     suspend fun getRandomImage(): RandomImageResponse
 
-    @GET("breeds")
+
     suspend fun getCatBreeds(): CatBreedsResponse
 
-    @GET("images/search")
-    suspend fun getCatsByBreed(
-        @Query("limit") limit:Int,
-        @Query("api_key") api_key:String = Constants.API_KEY,
-        @Query("breeds_id") breedId:String,
 
-    ):CatsByBreedResponse
+    suspend fun getCatsByBreed(limit:Int, breedId:String): CatsByBreedResponse
 }

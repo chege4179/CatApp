@@ -15,31 +15,46 @@
  */
 package com.peterchege.pussycatapp.core.di
 
-import com.peterchege.pussycatapp.core.api.CatApi
-import com.peterchege.pussycatapp.core.util.Constants
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.peterchege.pussycatapp.core.api.CatService
+import com.peterchege.pussycatapp.core.api.CatServiceImpl
+import com.peterchege.pussycatapp.core.api.HttpClientFactory
 import com.peterchege.pussycatapp.data.ImageRepositoryImpl
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
 import com.peterchege.pussycatapp.domain.use_case.GetCatBreedsUseCase
 import com.peterchege.pussycatapp.domain.use_case.GetCatsByBreedUseCase
 import com.peterchege.pussycatapp.presentation.screens.cat_breed_screen.CatBreedScreenViewModel
 import com.peterchege.pussycatapp.presentation.screens.home_screen.HomeScreenViewModel
-import org.koin.dsl.module
-import retrofit2.Retrofit
+import io.ktor.client.*
+import io.ktor.client.engine.*
+import io.ktor.client.engine.okhttp.*
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.scope.get
-import retrofit2.converter.gson.GsonConverterFactory
+import org.koin.dsl.module
 
 val appModules = module {
 
-    single<CatApi>{
-        Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(Constants.BASE_URL)
-            .build()
-            .create(CatApi::class.java)
+    single<CatService> {
+        CatServiceImpl(get())
+    }
+    single<HttpClient> {
+        HttpClientFactory().create(get())
+    }
+    single<HttpClientEngine> {
+        OkHttp.create {
+            addInterceptor(
+                ChuckerInterceptor.Builder(androidContext())
+                    .collector(ChuckerCollector(androidContext()))
+                    .maxContentLength(250000L)
+                    .redactHeaders(emptySet())
+                    .alwaysReadResponseBody(false)
+                    .build()
+            )
+        }
     }
 
-    single<ImageRepository>{
+    single<ImageRepository> {
         ImageRepositoryImpl(get())
 
     }
@@ -55,10 +70,9 @@ val appModules = module {
     }
 
     viewModel {
-        CatBreedScreenViewModel(get(),get())
+        CatBreedScreenViewModel(get(), get())
 
     }
-
 
 
 }

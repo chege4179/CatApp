@@ -16,5 +16,7 @@
 package com.peterchege.pussycatapp.core.api.responses.cat_breeds_response
 
 import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.Breed
+import kotlinx.serialization.Serializable
 
+@Serializable
 class CatBreedsResponse : ArrayList<Breed>()

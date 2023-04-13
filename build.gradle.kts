@@ -16,7 +16,10 @@
 import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 
 buildscript {
-    val compose_version = "1.2.0"
+    dependencies {
+        classpath ("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.8.10")
+    }
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

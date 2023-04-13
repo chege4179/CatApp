@@ -15,6 +15,9 @@
  */
 package com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Breed(
     val adaptability: Int,
     val affection_level: Int,
