@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 data class Breed(
     val adaptability: Int,
     val affection_level: Int,
-    val bidability: Int,
+    val bidability: Int?,
     val cat_friendly: Int,
     val cfa_url: String,
     val child_friendly: Int,

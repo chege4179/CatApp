@@ -15,7 +15,7 @@
  */
 package com.peterchege.pussycatapp.domain.repository
 
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreedsResponse
+import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
 import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
 
@@ -23,11 +23,11 @@ interface ImageRepository {
 
     suspend fun getRandomImage(): RandomImageResponse
 
-    suspend fun getCatBreeds(): CatBreedsResponse
+    suspend fun getCatBreeds(): List<CatBreed>
 
     suspend fun getCatsByBreed(
-        limit:Int,
-        breedId:String
-    ):CatsByBreedResponse
+        limit: Int,
+        breedId: String
+    ): CatsByBreedResponse
 
 }

@@ -15,47 +15,50 @@
  */
 package com.peterchege.pussycatapp.core.api
 
-import com.peterchege.pussycatapp.core.util.Constants
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreedsResponse
+import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
+import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.Breed
 import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
-import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponseItem
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.plugins.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import com.peterchege.pussycatapp.core.util.Constants
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.RedirectResponseException
+import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.request.get
 
-class CatServiceImpl (
-    private val client:HttpClient
-    ):CatService{
+class CatServiceImpl(
+    private val client: HttpClient
+) : CatService {
     override suspend fun getRandomImage(): RandomImageResponse {
         return try {
             client.get(
                 urlString = "${Constants.BASE_URL}/images/search"
             ) {}.body()
-        }catch (e:RedirectResponseException){
+        } catch (e: RedirectResponseException) {
 
             RandomImageResponse()
-        }catch (e:ServerResponseException){
+        } catch (e: ServerResponseException) {
             RandomImageResponse()
-        }catch (e:ClientRequestException){
-           RandomImageResponse()
+        } catch (e: ClientRequestException) {
+            RandomImageResponse()
         }
     }
 
-    override suspend fun getCatBreeds(): CatBreedsResponse {
+    override suspend fun getCatBreeds(): List<CatBreed> {
         return try {
-            client.get(
-                urlString = "${Constants.BASE_URL}/breeds"
-            ) {}.body()
-        }catch (e:RedirectResponseException){
+            client.get(urlString = "${Constants.BASE_URL}/breeds") {
+                url {
+//                    parameters.append(name = "limit", value = "2")
+                }
+            }.body()
+        } catch (e: RedirectResponseException) {
 
-            CatBreedsResponse()
-        }catch (e:ServerResponseException){
-            CatBreedsResponse()
-        }catch (e:ClientRequestException){
-            CatBreedsResponse()
+            emptyList<CatBreed>()
+        } catch (e: ServerResponseException) {
+            emptyList<CatBreed>()
+        } catch (e: ClientRequestException) {
+            emptyList<CatBreed>()
         }
     }
 
@@ -65,15 +68,15 @@ class CatServiceImpl (
                 urlString = "${Constants.BASE_URL}/breeds/${breedId}"
             ) {
                 url {
-                    parameters.append(name = "limit",value = limit.toString())
+                    parameters.append(name = "limit", value = limit.toString())
                 }
             }.body()
-        }catch (e:RedirectResponseException){
+        } catch (e: RedirectResponseException) {
 
             CatsByBreedResponse()
-        }catch (e:ServerResponseException){
+        } catch (e: ServerResponseException) {
             CatsByBreedResponse()
-        }catch (e:ClientRequestException){
+        } catch (e: ClientRequestException) {
             CatsByBreedResponse()
         }
     }

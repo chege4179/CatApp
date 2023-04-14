@@ -16,7 +16,7 @@
 package com.peterchege.pussycatapp.data
 
 import com.peterchege.pussycatapp.core.api.CatService
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreedsResponse
+import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
 import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
@@ -31,12 +31,12 @@ class ImageRepositoryImpl(
 
     }
 
-    override suspend fun getCatBreeds(): CatBreedsResponse {
+    override suspend fun getCatBreeds(): List<CatBreed> {
         return api.getCatBreeds()
     }
 
     override suspend fun getCatsByBreed(limit: Int, breedId: String): CatsByBreedResponse {
-        return api.getCatsByBreed(limit = limit,breedId = breedId)
+        return api.getCatsByBreed(limit = limit, breedId = breedId)
     }
 
 

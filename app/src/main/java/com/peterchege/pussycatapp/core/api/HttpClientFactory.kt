@@ -19,8 +19,10 @@ import com.peterchege.pussycatapp.BuildConfig
 import com.peterchege.pussycatapp.core.util.Constants
 import io.ktor.client.*
 import io.ktor.client.engine.*
+import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.kotlinx.serializer.KotlinxSerializer
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -28,7 +30,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class HttpClientFactory @Inject constructor() {
+class HttpClientFactory {
 
     fun create(engine: HttpClientEngine) = HttpClient(engine) {
 
@@ -47,6 +49,7 @@ class HttpClientFactory @Inject constructor() {
             header("x-api-key",Constants.API_KEY)
 
         }
+
         expectSuccess = true
         addDefaultResponseValidation()
         if (BuildConfig.DEBUG) {

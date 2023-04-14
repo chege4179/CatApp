@@ -15,13 +15,18 @@
  */
 package com.peterchege.pussycatapp.presentation.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,18 +34,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
-import coil.compose.rememberImagePainter
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.Breed
+import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
 import com.peterchege.pussycatapp.core.util.getCatImageById
 
 @ExperimentalCoilApi
 @Composable
 fun CatBreedCard(
-    catBreed: Breed,
-    onNavigateToBreedScreen:(String) -> Unit
+    catBreed: CatBreed,
+    onNavigateToBreedScreen: (String) -> Unit
 
 
-    ) {
+) {
     Card(
         modifier = Modifier
             .padding(5.dp)
@@ -52,9 +56,7 @@ fun CatBreedCard(
         ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-
-            ,
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -99,7 +101,7 @@ fun CatBreedCard(
                     Text(
                         text = catBreed.name,
 
-                    )
+                        )
                 }
             }
         }
