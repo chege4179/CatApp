@@ -21,14 +21,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
 import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.Breed
+import com.peterchege.pussycatapp.domain.repository.NetworkConnectivityService
+import com.peterchege.pussycatapp.domain.repository.NetworkStatus
 import com.peterchege.pussycatapp.domain.use_case.GetCatBreedsUseCase
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
     private val getCatBreedsUseCase: GetCatBreedsUseCase,
+    private val networkConnectivityService: NetworkConnectivityService,
 ) : ViewModel() {
     val _catBreeds = mutableStateOf<List<CatBreed>>(emptyList())
     val catBreeds :State<List<CatBreed>> = _catBreeds
+
+    val networkStatus = networkConnectivityService.networkStatus
+        .stateIn(
+            scope = viewModelScope,
+            started= SharingStarted.WhileSubscribed(5000L),
+            initialValue = NetworkStatus.Unknown,
+        )
 
     init {
         getCatBreeds()

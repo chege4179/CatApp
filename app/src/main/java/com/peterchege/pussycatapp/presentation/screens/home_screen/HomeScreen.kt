@@ -22,24 +22,46 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
+import com.peterchege.pussycatapp.domain.repository.NetworkStatus
 import com.peterchege.pussycatapp.presentation.components.CatBreedCard
 import org.koin.androidx.compose.getViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun HomeScreen(
     navController: NavController
 ) {
+    val snackbarHostState = SnackbarHostState()
     val viewModel = getViewModel<HomeScreenViewModel>()
+    val networkStatus = viewModel.networkStatus.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = networkStatus.value) {
+        when(networkStatus.value){
+            is NetworkStatus.Disconnected -> {
+                snackbarHostState.showSnackbar(message = "You are offline")
+            }
+            is NetworkStatus.Connected -> {
+                snackbarHostState.showSnackbar(message = "Connected....")
+            }
+            is NetworkStatus.Unknown -> {
+                snackbarHostState.showSnackbar(message = "Checking....")
+            }
+        }
+
+
+    }
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         modifier = Modifier.fillMaxSize()
     ) {
         LazyVerticalGrid(
@@ -51,7 +73,7 @@ fun HomeScreen(
             items(items = viewModel.catBreeds.value){ breed ->
                 CatBreedCard(
                     catBreed = breed,
-                    onNavigateToBreedScreen ={
+                    onNavigateToBreedScreen = {
 
                     }
                 )

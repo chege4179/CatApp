@@ -32,9 +32,7 @@ class CatServiceImpl(
 ) : CatService {
     override suspend fun getRandomImage(): RandomImageResponse {
         return try {
-            client.get(
-                urlString = "${Constants.BASE_URL}/images/search"
-            ) {}.body()
+            client.get(urlString = "${Constants.BASE_URL}/images/search").body()
         } catch (e: RedirectResponseException) {
 
             RandomImageResponse()
@@ -47,11 +45,7 @@ class CatServiceImpl(
 
     override suspend fun getCatBreeds(): List<CatBreed> {
         return try {
-            client.get(urlString = "${Constants.BASE_URL}/breeds") {
-                url {
-//                    parameters.append(name = "limit", value = "2")
-                }
-            }.body()
+            client.get(urlString = "${Constants.BASE_URL}/breeds").body()
         } catch (e: RedirectResponseException) {
 
             emptyList<CatBreed>()
@@ -64,9 +58,7 @@ class CatServiceImpl(
 
     override suspend fun getCatsByBreed(limit: Int, breedId: String): CatsByBreedResponse {
         return try {
-            client.get(
-                urlString = "${Constants.BASE_URL}/breeds/${breedId}"
-            ) {
+            client.get(urlString = "${Constants.BASE_URL}/breeds/${breedId}") {
                 url {
                     parameters.append(name = "limit", value = limit.toString())
                 }

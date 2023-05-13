@@ -21,7 +21,9 @@ import com.peterchege.pussycatapp.core.api.CatService
 import com.peterchege.pussycatapp.core.api.CatServiceImpl
 import com.peterchege.pussycatapp.core.api.HttpClientFactory
 import com.peterchege.pussycatapp.data.ImageRepositoryImpl
+import com.peterchege.pussycatapp.data.NetworkConnectivityServiceImpl
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
+import com.peterchege.pussycatapp.domain.repository.NetworkConnectivityService
 import com.peterchege.pussycatapp.domain.use_case.GetCatBreedsUseCase
 import com.peterchege.pussycatapp.domain.use_case.GetCatsByBreedUseCase
 import com.peterchege.pussycatapp.presentation.screens.cat_breed_screen.CatBreedScreenViewModel
@@ -36,12 +38,12 @@ import org.koin.dsl.module
 val appModules = module {
 
     single<CatService> {
-        CatServiceImpl(get())
+        CatServiceImpl(client = get())
     }
     single<HttpClient> {
-        HttpClientFactory().create(get())
+        HttpClientFactory().create(engine = get())
     }
-    single<HttpClientEngine> {
+    single<HttpClientEngine>{
         OkHttp.create {
             addInterceptor(
                 ChuckerInterceptor.Builder(androidContext())
@@ -53,24 +55,27 @@ val appModules = module {
             )
         }
     }
+    single<NetworkConnectivityService>{
+        NetworkConnectivityServiceImpl(context = androidContext())
+    }
 
     single<ImageRepository> {
-        ImageRepositoryImpl(get())
+        ImageRepositoryImpl(api = get())
 
     }
     single {
-        GetCatBreedsUseCase(get())
+        GetCatBreedsUseCase(repository = get())
     }
     single {
-        GetCatsByBreedUseCase(get())
+        GetCatsByBreedUseCase(repository = get())
     }
 
     viewModel {
-        HomeScreenViewModel(get())
+        HomeScreenViewModel(getCatBreedsUseCase = get(), networkConnectivityService = get())
     }
 
     viewModel {
-        CatBreedScreenViewModel(get(), get())
+        CatBreedScreenViewModel(savedStateHandle = get(), getCatsByBreedUseCase =  get())
 
     }
 
