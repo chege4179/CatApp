@@ -23,6 +23,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Create Local Properties File
+        run: cat /home/runner/work/PussyCatApp/PussyCatApp/local.properties | base64
+
+      - name: Putting data
+        env:
+          DATA: ${{ secrets.PROPERTIES_CONTENT }}
+        run: echo $DATA > /home/runner/work/PussyCatApp/PussyCatApp/local.properties
+
       - name: Build with Gradle
         run: ./gradlew build
 

@@ -15,17 +15,17 @@
  */
 package com.peterchege.pussycatapp.core.api
 
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
-import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
+import com.peterchege.pussycatapp.core.util.NetworkResult
 
 interface CatService {
 
-    suspend fun getRandomImage(): RandomImageResponse
+    suspend fun getRandomImage(): NetworkResult<RandomImageResponse>
 
 
-    suspend fun getCatBreeds(): List<CatBreed>
+    suspend fun getAllCatBreeds(): NetworkResult<List<CatBreed>>
 
 
-    suspend fun getCatsByBreed(limit:Int, breedId:String): CatsByBreedResponse
+    suspend fun getCatBreedById(breedId:String): NetworkResult<CatBreed>
 }

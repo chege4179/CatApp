@@ -18,24 +18,48 @@ package com.peterchege.pussycatapp.presentation.screens.cat_breed_screen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.peterchege.pussycatapp.domain.use_case.GetCatsByBreedUseCase
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
+import com.peterchege.pussycatapp.core.util.NetworkResult
+import com.peterchege.pussycatapp.domain.use_case.GetCatBreedByIdUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+sealed interface CatBreedScreenUiState {
+
+    object Loading : CatBreedScreenUiState
+
+    data class Success(val catBreed:CatBreed):CatBreedScreenUiState
+
+    data class Error(val message: String ) : CatBreedScreenUiState
+
+}
+
 class CatBreedScreenViewModel(
-    savedStateHandle: SavedStateHandle,
-    private val getCatsByBreedUseCase: GetCatsByBreedUseCase,
+
+    private val getCatsByBreedUseCase: GetCatBreedByIdUseCase,
 ) :ViewModel(){
 
+    private val _uiState = MutableStateFlow<CatBreedScreenUiState>(CatBreedScreenUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
-
-
-    init {
-        savedStateHandle.get<String>("id")?.let {
-            viewModelScope.launch {
-                val data = getCatsByBreedUseCase(breedId = it)
+    fun getCatBreedById(breedId:String){
+        viewModelScope.launch {
+            val result = getCatsByBreedUseCase(breedId = breedId)
+            when(result){
+                is NetworkResult.Empty -> {
+                    _uiState.value = CatBreedScreenUiState.Error(message = "This cat info was not found")
+                }
+                is NetworkResult.Loading -> {
+                    _uiState.value = CatBreedScreenUiState.Loading
+                }
+                is NetworkResult.Success -> {
+                    _uiState.value = CatBreedScreenUiState.Success(catBreed = result.data)
+                }
+                is NetworkResult.Error -> {
+                    _uiState.value = CatBreedScreenUiState.Error(message = result.message)
+                }
             }
-
-
         }
     }
 

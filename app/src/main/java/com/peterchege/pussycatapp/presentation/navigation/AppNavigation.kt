@@ -18,8 +18,10 @@ package com.peterchege.pussycatapp.presentation.navigation
 import androidx.compose.runtime.Composable
 
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.peterchege.pussycatapp.core.util.Screens
 import com.peterchege.pussycatapp.presentation.screens.cat_breed_screen.CatBreedScreen
 import com.peterchege.pussycatapp.presentation.screens.home_screen.HomeScreen
@@ -35,8 +37,14 @@ fun AppNavigation(
         composable(route = Screens.HOME_SCREEN){
             HomeScreen(navController = navHostController)
         }
-        composable(route = Screens.CAT_BREED_SCREEN + "/{id}"){
-            CatBreedScreen(navController = navHostController)
+        composable(
+            route = Screens.CAT_BREED_SCREEN + "/{id}",
+            arguments = listOf(navArgument(name = "id") { type = NavType.StringType })
+
+        ){
+            val id = it.arguments?.getString("id")
+                ?: throw IllegalStateException("Breed ID missing.")
+            CatBreedScreen(navController = navHostController, breedId = id)
         }
 
     }

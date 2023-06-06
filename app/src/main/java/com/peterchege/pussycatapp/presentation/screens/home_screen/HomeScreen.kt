@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -31,28 +32,51 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
+import com.peterchege.pussycatapp.core.util.Screens
 import com.peterchege.pussycatapp.domain.repository.NetworkStatus
 import com.peterchege.pussycatapp.presentation.components.CatBreedCard
 import org.koin.androidx.compose.getViewModel
 
+@Composable
+fun HomeScreen(
+    navController: NavController,
+) {
+    val viewModel = getViewModel<HomeScreenViewModel>()
+    val networkStatus by viewModel.networkStatus.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    HomeScreenContent(
+        networkStatus = networkStatus,
+        uiState = uiState,
+        retryCallBack = { viewModel.getCatBreeds() },
+        navController = navController
+    )
+
+}
+
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun HomeScreen(
-    navController: NavController
+fun HomeScreenContent(
+    networkStatus: NetworkStatus,
+    uiState: HomeScreenUiState,
+    retryCallBack: () -> Unit,
+    navController: NavController,
 ) {
     val snackbarHostState = SnackbarHostState()
-    val viewModel = getViewModel<HomeScreenViewModel>()
-    val networkStatus = viewModel.networkStatus.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = networkStatus.value) {
-        when(networkStatus.value){
+
+    LaunchedEffect(key1 = networkStatus) {
+        when (networkStatus) {
             is NetworkStatus.Disconnected -> {
                 snackbarHostState.showSnackbar(message = "You are offline")
             }
+
             is NetworkStatus.Connected -> {
                 snackbarHostState.showSnackbar(message = "Connected....")
             }
+
             is NetworkStatus.Unknown -> {
                 snackbarHostState.showSnackbar(message = "Checking....")
             }
@@ -64,24 +88,55 @@ fun HomeScreen(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
-        ){
-            items(items = viewModel.catBreeds.value){ breed ->
-                CatBreedCard(
-                    catBreed = breed,
-                    onNavigateToBreedScreen = {
+        when (uiState) {
+            is HomeScreenUiState.Error -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(text = uiState.message)
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Button(
+                        onClick = {
+                            retryCallBack()
+                        }
+                    ) {
+                        Text(text = "Retry")
 
                     }
-                )
-
+                }
             }
 
-        }
+            is HomeScreenUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
 
+                    ) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+
+            is HomeScreenUiState.Success -> {
+                val cats = uiState.catBreeds
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(10.dp),
+                ) {
+                    items(items = cats) { breed ->
+                        CatBreedCard(
+                            catBreed = breed,
+                            onNavigateToBreedScreen = {
+                                navController.navigate(Screens.CAT_BREED_SCREEN + "/${it}")
+
+                            }
+                        )
+                    }
+                }
+            }
+        }
     }
 
 }

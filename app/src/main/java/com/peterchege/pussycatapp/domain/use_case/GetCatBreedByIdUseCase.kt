@@ -15,15 +15,16 @@
  */
 package com.peterchege.pussycatapp.domain.use_case
 
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
+import com.peterchege.pussycatapp.core.util.NetworkResult
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
 
-class GetCatBreedsUseCase(
+class GetCatBreedByIdUseCase(
     private val repository: ImageRepository
 ) {
-
-    suspend operator fun invoke(): List<CatBreed> {
-        return repository.getCatBreeds()
+    suspend operator fun invoke(breedId:String): NetworkResult<CatBreed> {
+        return repository.getCatBreedById(breedId = breedId)
     }
+
 
 }

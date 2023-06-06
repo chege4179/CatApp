@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.api.responses.cat_breeds_response
+package com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response
 
 import kotlinx.serialization.Serializable
 

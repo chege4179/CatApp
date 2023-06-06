@@ -16,6 +16,7 @@
 package com.peterchege.pussycatapp.domain.use_case
 
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
+import com.peterchege.pussycatapp.core.util.NetworkResult
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
 
 class GetRandomImageUseCase(
@@ -23,7 +24,7 @@ class GetRandomImageUseCase(
 ) {
 
 
-    suspend operator fun invoke(): RandomImageResponse {
+    suspend operator fun invoke(): NetworkResult<RandomImageResponse> {
         return repository.getRandomImage()
     }
 }

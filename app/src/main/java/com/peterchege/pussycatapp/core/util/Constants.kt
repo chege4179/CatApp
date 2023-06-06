@@ -15,8 +15,10 @@
  */
 package com.peterchege.pussycatapp.core.util
 
+import com.peterchege.pussycatapp.BuildConfig
+
 object Constants {
 
-    const val API_KEY ="live_crfDHF356v34edsR7TV6cRRcVZC1MRoO5xVPKVOhZkMI1pSfgsmSrKNSdIOe1xTS"
+    const val API_KEY = BuildConfig.API_KEY
     const val BASE_URL ="https://api.thecatapi.com/v1"
 }

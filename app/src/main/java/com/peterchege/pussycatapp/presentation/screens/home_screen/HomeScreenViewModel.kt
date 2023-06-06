@@ -15,25 +15,40 @@
  */
 package com.peterchege.pussycatapp.presentation.screens.home_screen
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
-import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.Breed
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
+import com.peterchege.pussycatapp.core.util.NetworkResult
 import com.peterchege.pussycatapp.domain.repository.NetworkConnectivityService
 import com.peterchege.pussycatapp.domain.repository.NetworkStatus
-import com.peterchege.pussycatapp.domain.use_case.GetCatBreedsUseCase
+import com.peterchege.pussycatapp.domain.use_case.GetAllCatBreedsUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+
+
+sealed interface HomeScreenUiState {
+
+    object Loading : HomeScreenUiState
+
+    data class Success(val catBreeds:List<CatBreed> ) : HomeScreenUiState
+
+    data class Error(val message: String ) : HomeScreenUiState
+
+}
+
 class HomeScreenViewModel(
-    private val getCatBreedsUseCase: GetCatBreedsUseCase,
+    private val getCatBreedsUseCase: GetAllCatBreedsUseCase,
     private val networkConnectivityService: NetworkConnectivityService,
 ) : ViewModel() {
-    val _catBreeds = mutableStateOf<List<CatBreed>>(emptyList())
-    val catBreeds :State<List<CatBreed>> = _catBreeds
+
+
+    private val _uiState = MutableStateFlow<HomeScreenUiState>(HomeScreenUiState.Loading)
+    val uiState = _uiState.asStateFlow()
+
 
     val networkStatus = networkConnectivityService.networkStatus
         .stateIn(
@@ -46,10 +61,25 @@ class HomeScreenViewModel(
         getCatBreeds()
     }
 
-    private fun getCatBreeds(){
+    fun getCatBreeds(){
         viewModelScope.launch {
             val response = getCatBreedsUseCase()
-            _catBreeds.value = response
+            when(response){
+                is NetworkResult.Loading -> {
+                    _uiState.value = HomeScreenUiState.Loading
+                }
+                is NetworkResult.Error -> {
+                    _uiState.value = HomeScreenUiState.Error(message = response.message)
+
+                }
+                is NetworkResult.Success -> {
+                    _uiState.value = HomeScreenUiState.Success(catBreeds = response.data)
+                }
+                is NetworkResult.Empty -> {
+                    _uiState.value = HomeScreenUiState.Error(message = "Nothing was found")
+                }
+            }
+
 
         }
     }

@@ -34,7 +34,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.util.getCatImageById
 
 @ExperimentalCoilApi

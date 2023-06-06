@@ -24,8 +24,9 @@ import com.peterchege.pussycatapp.data.ImageRepositoryImpl
 import com.peterchege.pussycatapp.data.NetworkConnectivityServiceImpl
 import com.peterchege.pussycatapp.domain.repository.ImageRepository
 import com.peterchege.pussycatapp.domain.repository.NetworkConnectivityService
-import com.peterchege.pussycatapp.domain.use_case.GetCatBreedsUseCase
-import com.peterchege.pussycatapp.domain.use_case.GetCatsByBreedUseCase
+import com.peterchege.pussycatapp.domain.use_case.GetAllCatBreedsUseCase
+import com.peterchege.pussycatapp.domain.use_case.GetCatBreedByIdUseCase
+
 import com.peterchege.pussycatapp.presentation.screens.cat_breed_screen.CatBreedScreenViewModel
 import com.peterchege.pussycatapp.presentation.screens.home_screen.HomeScreenViewModel
 import io.ktor.client.*
@@ -64,10 +65,10 @@ val appModules = module {
 
     }
     single {
-        GetCatBreedsUseCase(repository = get())
+        GetAllCatBreedsUseCase(repository = get())
     }
     single {
-        GetCatsByBreedUseCase(repository = get())
+        GetCatBreedByIdUseCase(repository = get())
     }
 
     viewModel {
@@ -75,7 +76,7 @@ val appModules = module {
     }
 
     viewModel {
-        CatBreedScreenViewModel(savedStateHandle = get(), getCatsByBreedUseCase =  get())
+        CatBreedScreenViewModel(getCatsByBreedUseCase =  get())
 
     }
 

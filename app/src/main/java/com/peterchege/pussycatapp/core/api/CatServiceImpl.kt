@@ -15,62 +15,29 @@
  */
 package com.peterchege.pussycatapp.core.api
 
-import com.peterchege.pussycatapp.core.api.responses.cat_breeds_response.CatBreed
-import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.Breed
-import com.peterchege.pussycatapp.core.api.responses.cats_by_breeds_response.CatsByBreedResponse
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
 import com.peterchege.pussycatapp.core.util.Constants
+import com.peterchege.pussycatapp.core.util.NetworkResult
+import com.peterchege.pussycatapp.core.util.safeApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.RedirectResponseException
-import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.get
 
 class CatServiceImpl(
     private val client: HttpClient
 ) : CatService {
-    override suspend fun getRandomImage(): RandomImageResponse {
-        return try {
-            client.get(urlString = "${Constants.BASE_URL}/images/search").body()
-        } catch (e: RedirectResponseException) {
-
-            RandomImageResponse()
-        } catch (e: ServerResponseException) {
-            RandomImageResponse()
-        } catch (e: ClientRequestException) {
-            RandomImageResponse()
-        }
+    override suspend fun getRandomImage(): NetworkResult<RandomImageResponse> = safeApiCall {
+        client.get(urlString = "${Constants.BASE_URL}/images/search").body()
     }
 
-    override suspend fun getCatBreeds(): List<CatBreed> {
-        return try {
-            client.get(urlString = "${Constants.BASE_URL}/breeds").body()
-        } catch (e: RedirectResponseException) {
-
-            emptyList<CatBreed>()
-        } catch (e: ServerResponseException) {
-            emptyList<CatBreed>()
-        } catch (e: ClientRequestException) {
-            emptyList<CatBreed>()
-        }
+    override suspend fun getAllCatBreeds(): NetworkResult<List<CatBreed>> = safeApiCall {
+        client.get(urlString = "${Constants.BASE_URL}/breeds").body()
     }
 
-    override suspend fun getCatsByBreed(limit: Int, breedId: String): CatsByBreedResponse {
-        return try {
-            client.get(urlString = "${Constants.BASE_URL}/breeds/${breedId}") {
-                url {
-                    parameters.append(name = "limit", value = limit.toString())
-                }
-            }.body()
-        } catch (e: RedirectResponseException) {
-
-            CatsByBreedResponse()
-        } catch (e: ServerResponseException) {
-            CatsByBreedResponse()
-        } catch (e: ClientRequestException) {
-            CatsByBreedResponse()
-        }
+    override suspend fun getCatBreedById(breedId: String): NetworkResult<CatBreed>
+    = safeApiCall{
+        client.get(urlString = "${Constants.BASE_URL}/breeds/${breedId}").body()
     }
 
 }
