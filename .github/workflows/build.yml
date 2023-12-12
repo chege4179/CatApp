@@ -24,12 +24,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Create Local Properties File
-        run: cat /home/runner/work/PussyCatApp/PussyCatApp/local.properties | base64
+        run: cat /home/runner/work/CatApp/CatApp/local.properties | base64
 
       - name: Putting data
         env:
           DATA: ${{ secrets.PROPERTIES_CONTENT }}
-        run: echo $DATA > /home/runner/work/PussyCatApp/PussyCatApp/local.properties
+        run: echo $DATA > /home/runner/work/CatApp/CatApp/local.properties
 
       - name: Build with Gradle
         run: ./gradlew build
