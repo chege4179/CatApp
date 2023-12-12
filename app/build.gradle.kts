@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id ("com.android.application")
     id ("org.jetbrains.kotlin.android")
@@ -23,7 +23,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.firebase.appdistribution")
 }
-val key: String = gradleLocalProperties(rootDir).getProperty("KEY_PASSWORD")
+
 secrets {
     defaultPropertiesFileName = "local.defaults.properties"
 }
@@ -47,8 +47,8 @@ android {
         create("release") {
             storeFile = file("catapp.jks")
             keyAlias = "catapp"
-            keyPassword = key
-            storePassword =  key
+            keyPassword = "peterchege"
+            storePassword = "peterchege"
         }
     }
 

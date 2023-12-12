@@ -5,22 +5,22 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.0029176">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.001897">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: spotlessApply" time="5.0364424">
+      <testcase classname="fastlane.lanes" name="1: spotlessApply" time="6.4111906">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: assembleRelease" time="7.0865041">
+      <testcase classname="fastlane.lanes" name="2: assembleRelease" time="232.7050708">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: appDistributionUploadRelease" time="14.6637147">
+      <testcase classname="fastlane.lanes" name="3: appDistributionUploadRelease" time="19.1509199">
         
       </testcase>
     
