@@ -1,4 +1,4 @@
-# Pussy Cat Application
+# Cat Application
 
 This is a simple Android app that consumes the CATs API to display various images of cats
 The objective of this project was to learn how dependency injection works  with the Koin 
