@@ -23,7 +23,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.firebase.appdistribution")
 }
-val key: String = gradleLocalProperties(rootDir).getProperty("KeyPassword")
+val key: String = gradleLocalProperties(rootDir).getProperty("KEY_PASSWORD")
 secrets {
     defaultPropertiesFileName = "local.defaults.properties"
 }
