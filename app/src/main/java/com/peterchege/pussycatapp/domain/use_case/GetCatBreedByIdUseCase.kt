@@ -17,10 +17,10 @@ package com.peterchege.pussycatapp.domain.use_case
 
 import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.util.NetworkResult
-import com.peterchege.pussycatapp.domain.repository.ImageRepository
+import com.peterchege.pussycatapp.domain.repository.CatRepository
 
 class GetCatBreedByIdUseCase(
-    private val repository: ImageRepository
+    private val repository: CatRepository
 ) {
     suspend operator fun invoke(breedId:String): NetworkResult<CatBreed> {
         return repository.getCatBreedById(breedId = breedId)

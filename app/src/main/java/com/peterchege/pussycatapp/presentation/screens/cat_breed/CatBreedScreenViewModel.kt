@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.presentation.screens.cat_breed_screen
+package com.peterchege.pussycatapp.presentation.screens.cat_breed
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed

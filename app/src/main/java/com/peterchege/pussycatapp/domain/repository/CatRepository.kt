@@ -13,18 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.domain.use_case
+package com.peterchege.pussycatapp.domain.repository
 
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
 import com.peterchege.pussycatapp.core.util.NetworkResult
-import com.peterchege.pussycatapp.domain.repository.CatRepository
+import kotlinx.coroutines.flow.Flow
 
-class GetRandomImageUseCase(
-    private val repository: CatRepository
-) {
+interface CatRepository {
+
+    suspend fun getRandomImage(): NetworkResult<RandomImageResponse>
+
+    suspend fun getAllCatBreeds(): NetworkResult<List<CatBreed>>
+
+    suspend fun getCatBreedById(breedId: String):NetworkResult<CatBreed>
 
 
-    suspend operator fun invoke(): NetworkResult<RandomImageResponse> {
-        return repository.getRandomImage()
-    }
+    fun getAllSavedCatBreeds(): Flow<List<CatBreed>>
+
+    suspend fun deleteAllCatBreeds()
+
+    suspend fun insertCatBreed(catBreed: CatBreed)
+
+    suspend fun deleteCatBreedById(id:String)
+
+
 }

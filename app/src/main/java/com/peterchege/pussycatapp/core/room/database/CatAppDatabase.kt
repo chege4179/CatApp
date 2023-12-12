@@ -13,15 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.util
+package com.peterchege.pussycatapp.core.room.database
 
-object Screens {
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.peterchege.pussycatapp.core.room.converters.WeightConverter
+import com.peterchege.pussycatapp.core.room.dao.CatBreedDao
+import com.peterchege.pussycatapp.core.room.entity.CatBreedEntity
 
-    const val HOME_SCREEN = "HOME_SCREEN"
 
-    const val CAT_BREED_SCREEN ="CAT_BREED_SCREEN"
+@TypeConverters(WeightConverter::class)
+@Database(
+    entities = [
+        CatBreedEntity::class,
+    ],
+    version = 1,
+    exportSchema = true
+)
+abstract class CatAppDatabase : RoomDatabase() {
 
-    const val SAVED_CAT_SCREEN = "SAVED_CAT_SCREEN"
-
-    const val DASHBOARD_SCREEN = "DASH_BOARD_SCREEN"
+    abstract val catbreedDao: CatBreedDao
 }

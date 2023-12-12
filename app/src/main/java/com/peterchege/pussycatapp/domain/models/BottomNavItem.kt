@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.util
+package com.peterchege.pussycatapp.domain.models
 
-object Screens {
+import androidx.compose.ui.graphics.vector.ImageVector
 
-    const val HOME_SCREEN = "HOME_SCREEN"
+data class BottomNavItem(
+    val name:String,
+    val route:String,
+    val icon:ImageVector,
+    val badgeCount:Int = 0,
 
-    const val CAT_BREED_SCREEN ="CAT_BREED_SCREEN"
-
-    const val SAVED_CAT_SCREEN = "SAVED_CAT_SCREEN"
-
-    const val DASHBOARD_SCREEN = "DASH_BOARD_SCREEN"
-}
+)

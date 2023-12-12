@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "65281837121",
+    "project_id": "miniprojects-93d37",
+    "storage_bucket": "miniprojects-93d37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65281837121:android:965fe1a5f09a753759dec0",
+        "android_client_info": {
+          "package_name": "com.peterchege.pussycatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsqTC_1bug9LZy5fVqCrSZS7jaXcb7AgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

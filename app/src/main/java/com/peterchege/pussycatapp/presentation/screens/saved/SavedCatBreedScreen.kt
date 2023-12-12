@@ -13,85 +13,89 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.presentation.screens.home_screen
+package com.peterchege.pussycatapp.presentation.screens.saved
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.SubcomposeAsyncImage
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.util.Screens
+import com.peterchege.pussycatapp.domain.mappers.toCatBreed
+import com.peterchege.pussycatapp.domain.mappers.toUIModel
 import com.peterchege.pussycatapp.domain.repository.NetworkStatus
 import com.peterchege.pussycatapp.presentation.components.CatBreedCard
+import com.peterchege.pussycatapp.presentation.screens.home.HomeScreenUiState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun HomeScreen(
-    navController: NavController,
+fun SavedCatBreedScreen(
+    navigateToCatBreedScreen:(String) -> Unit,
 ) {
-    val viewModel = getViewModel<HomeScreenViewModel>()
-    val networkStatus by viewModel.networkStatus.collectAsStateWithLifecycle()
+    val viewModel = getViewModel<SavedCatBreedScreenViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    HomeScreenContent(
-        networkStatus = networkStatus,
+    SavedCatBreedScreenContent(
         uiState = uiState,
-        retryCallBack = { viewModel.getCatBreeds() },
-        navController = navController
+        retryCallBack = { /*TODO*/ },
+        navigateToCatBreedScreen = navigateToCatBreedScreen,
+        saveCatBreed = {
+            viewModel.saveCatBreed(it)
+        },
+        unSaveCatBreed = {
+            viewModel.unSaveCatBreed(it)
+        }
     )
-
 }
 
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalCoilApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenContent(
-    networkStatus: NetworkStatus,
-    uiState: HomeScreenUiState,
+fun SavedCatBreedScreenContent(
+    uiState: SavedCatBreedScreenUiState,
     retryCallBack: () -> Unit,
-    navController: NavController,
+    saveCatBreed: (CatBreed) -> Unit,
+    unSaveCatBreed: (String) -> Unit,
+    navigateToCatBreedScreen:(String) -> Unit,
 ) {
     val snackbarHostState = SnackbarHostState()
-
-
-    LaunchedEffect(key1 = networkStatus) {
-        when (networkStatus) {
-            is NetworkStatus.Disconnected -> {
-                snackbarHostState.showSnackbar(message = "You are offline")
-            }
-
-            is NetworkStatus.Connected -> {
-                snackbarHostState.showSnackbar(message = "Connected....")
-            }
-
-            is NetworkStatus.Unknown -> {
-                snackbarHostState.showSnackbar(message = "Checking....")
-            }
-        }
-
-
-    }
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        modifier = Modifier.fillMaxSize()
-    ) {
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "Saved Cat Breeds")
+                }
+            )
+        }
+    ) { paddingValues ->
         when (uiState) {
-            is HomeScreenUiState.Error -> {
+            is SavedCatBreedScreenUiState.Error -> {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
@@ -108,7 +112,7 @@ fun HomeScreenContent(
                 }
             }
 
-            is HomeScreenUiState.Loading -> {
+            is SavedCatBreedScreenUiState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
 
@@ -117,26 +121,35 @@ fun HomeScreenContent(
                 }
             }
 
-            is HomeScreenUiState.Success -> {
+            is SavedCatBreedScreenUiState.Success -> {
                 val cats = uiState.catBreeds
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(10.dp),
+                        .padding(10.dp)
+                        .padding(paddingValues),
                 ) {
+
                     items(items = cats) { breed ->
                         CatBreedCard(
                             catBreed = breed,
                             onNavigateToBreedScreen = {
-                                navController.navigate(Screens.CAT_BREED_SCREEN + "/${it}")
+                                navigateToCatBreedScreen(it)
+                            },
+                            saveCatBreed = {
+                                saveCatBreed(it.toCatBreed())
+                            },
+                            unSaveCatBreed = {
+                                unSaveCatBreed(it)
 
                             }
+
                         )
                     }
                 }
             }
         }
     }
-
 }
+

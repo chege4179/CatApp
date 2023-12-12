@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.presentation.screens.home_screen
+package com.peterchege.pussycatapp.presentation.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.util.NetworkResult
+import com.peterchege.pussycatapp.domain.models.CatBreedUI
+import com.peterchege.pussycatapp.domain.repository.CatRepository
 import com.peterchege.pussycatapp.domain.repository.NetworkConnectivityService
 import com.peterchege.pussycatapp.domain.repository.NetworkStatus
 import com.peterchege.pussycatapp.domain.use_case.GetAllCatBreedsUseCase
@@ -42,6 +44,7 @@ sealed interface HomeScreenUiState {
 
 class HomeScreenViewModel(
     private val getCatBreedsUseCase: GetAllCatBreedsUseCase,
+    private val repository: CatRepository,
     private val networkConnectivityService: NetworkConnectivityService,
 ) : ViewModel() {
 
@@ -49,6 +52,12 @@ class HomeScreenViewModel(
     private val _uiState = MutableStateFlow<HomeScreenUiState>(HomeScreenUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
+    val savedCatBreeds = repository.getAllSavedCatBreeds()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     val networkStatus = networkConnectivityService.networkStatus
         .stateIn(
@@ -57,6 +66,17 @@ class HomeScreenViewModel(
             initialValue = NetworkStatus.Unknown,
         )
 
+    fun saveCatBreed(catBreed: CatBreed){
+        viewModelScope.launch {
+            repository.insertCatBreed(catBreed)
+        }
+    }
+
+    fun unSaveCatBreed(id:String){
+        viewModelScope.launch {
+            repository.deleteCatBreedById(id)
+        }
+    }
     init {
         getCatBreeds()
     }

@@ -1,0 +1,14 @@
+
+default_platform(:android)
+
+platform :android do
+
+
+  desc "Build App and Upload it to Firebase App Distribution"
+  lane :beta do
+    gradle(task: "spotlessApply")
+    gradle(task: "assembleRelease")
+    gradle(task: "appDistributionUploadRelease")
+
+  end
+end

@@ -17,30 +17,16 @@ package com.peterchege.pussycatapp.core.di
 
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.peterchege.pussycatapp.core.api.CatService
-import com.peterchege.pussycatapp.core.api.CatServiceImpl
 import com.peterchege.pussycatapp.core.api.HttpClientFactory
-import com.peterchege.pussycatapp.data.ImageRepositoryImpl
 import com.peterchege.pussycatapp.data.NetworkConnectivityServiceImpl
-import com.peterchege.pussycatapp.domain.repository.ImageRepository
 import com.peterchege.pussycatapp.domain.repository.NetworkConnectivityService
-import com.peterchege.pussycatapp.domain.use_case.GetAllCatBreedsUseCase
-import com.peterchege.pussycatapp.domain.use_case.GetCatBreedByIdUseCase
-
-import com.peterchege.pussycatapp.presentation.screens.cat_breed_screen.CatBreedScreenViewModel
-import com.peterchege.pussycatapp.presentation.screens.home_screen.HomeScreenViewModel
-import io.ktor.client.*
-import io.ktor.client.engine.*
-import io.ktor.client.engine.okhttp.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val appModules = module {
-
-    single<CatService> {
-        CatServiceImpl(client = get())
-    }
+val networkModule = module {
     single<HttpClient> {
         HttpClientFactory().create(engine = get())
     }
@@ -59,26 +45,4 @@ val appModules = module {
     single<NetworkConnectivityService>{
         NetworkConnectivityServiceImpl(context = androidContext())
     }
-
-    single<ImageRepository> {
-        ImageRepositoryImpl(api = get())
-
-    }
-    single {
-        GetAllCatBreedsUseCase(repository = get())
-    }
-    single {
-        GetCatBreedByIdUseCase(repository = get())
-    }
-
-    viewModel {
-        HomeScreenViewModel(getCatBreedsUseCase = get(), networkConnectivityService = get())
-    }
-
-    viewModel {
-        CatBreedScreenViewModel(getCatsByBreedUseCase =  get())
-
-    }
-
-
 }
