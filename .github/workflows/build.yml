@@ -27,19 +27,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Bundler cache
-        uses: actions/cache@v1
-        with:
-          path: $CACHE_BUNDLER
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
+
 
       - name: Install Dependencies
         run: gem install bundler && bundle install
