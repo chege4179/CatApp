@@ -15,24 +15,20 @@
  */
 package com.peterchege.pussycatapp.core.di
 
-import android.app.Application
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import com.peterchege.pussycatapp.core.api.CatService
+import com.peterchege.pussycatapp.core.api.CatServiceImpl
+import com.peterchege.pussycatapp.data.CatRepositoryImpl
+import com.peterchege.pussycatapp.domain.repository.CatRepository
+import org.koin.dsl.module
 
-class PussyCatApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-
-        startKoin {
-            androidLogger()
-            androidContext(this@PussyCatApp)
-            modules(
-                databaseModule + jankStatsModule + networkModule +
-                        repositoryModule + repositoryModule + usecaseModule +
-                        viewModelModule
-            )
-        }
+val repositoryModule = module {
+    single<CatService> {
+        CatServiceImpl(client = get())
     }
 
+
+    single<CatRepository> {
+        CatRepositoryImpl(api = get(), db = get())
+
+    }
 }

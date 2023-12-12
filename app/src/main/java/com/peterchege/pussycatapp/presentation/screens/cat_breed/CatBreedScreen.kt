@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.presentation.screens.cat_breed_screen
+package com.peterchege.pussycatapp.presentation.screens.cat_breed
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,15 +34,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import com.peterchege.pussycatapp.core.util.getCatImageById
-import com.peterchege.pussycatapp.presentation.screens.home_screen.HomeScreenViewModel
 import org.koin.androidx.compose.getViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -111,6 +121,8 @@ fun CatBreedScreenContent(
                 }
                 is CatBreedScreenUiState.Success -> {
                     val catBreed = uiState.catBreed
+                    var offset by remember { mutableStateOf(Offset.Zero) }
+                    var zoom by remember { mutableStateOf(1f) }
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Top,
@@ -131,7 +143,42 @@ fun CatBreedScreenContent(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(250.dp),
+                                .height(250.dp)
+                                .clipToBounds()
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onDoubleTap = { tapOffset ->
+                                            zoom = if (zoom > 1f) 1f else 2f
+                                            offset = calculateDoubleTapOffset(
+                                                zoom,
+                                                size,
+                                                tapOffset
+                                            )
+
+                                        }
+                                    )
+                                }
+                                .pointerInput(Unit) {
+                                    detectTransformGestures(
+                                        onGesture = { centroid, pan, gestureZoom, _ ->
+                                            offset = offset.calculateNewOffset(
+                                                centroid, pan, zoom, gestureZoom, size
+                                            )
+                                            zoom = maxOf(a = 1f, b = zoom * gestureZoom)
+                                        }
+                                    )
+                                }
+                                .graphicsLayer {
+                                    translationX = -offset.x * zoom
+                                    translationY = -offset.y * zoom
+                                    scaleX = zoom
+                                    scaleY = zoom
+                                    transformOrigin = TransformOrigin(
+                                        pivotFractionX = 0f,
+                                        pivotFractionY = 0f
+                                    )
+                                }
+                            ,
                             contentDescription = "Cat Images"
                         )
                         Text(text = "Cat breed : ${catBreed.name}")
@@ -149,4 +196,32 @@ fun CatBreedScreenContent(
 
     }
 
+}
+
+fun Offset.calculateNewOffset(
+    centroid: Offset,
+    pan: Offset,
+    zoom: Float,
+    gestureZoom: Float,
+    size: IntSize
+): Offset {
+    val newScale = maxOf(1f, zoom * gestureZoom)
+    val newOffset = (this + centroid / zoom) -
+            (centroid / newScale + pan / zoom)
+    return Offset(
+        newOffset.x.coerceIn(0f, (size.width / zoom) * (zoom - 1f)),
+        newOffset.y.coerceIn(0f, (size.height / zoom) * (zoom - 1f))
+    )
+}
+
+fun calculateDoubleTapOffset(
+    zoom: Float,
+    size: IntSize,
+    tapOffset: Offset
+): Offset {
+    val newOffset = Offset(tapOffset.x, tapOffset.y)
+    return Offset(
+        newOffset.x.coerceIn(0f, (size.width / zoom) * (zoom - 1f)),
+        newOffset.y.coerceIn(0f, (size.height / zoom) * (zoom - 1f))
+    )
 }

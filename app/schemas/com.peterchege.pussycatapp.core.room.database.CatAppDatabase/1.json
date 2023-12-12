@@ -1,0 +1,232 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "45e907ea513ee3ec488f125a474333a2",
+    "entities": [
+      {
+        "tableName": "cat_breed",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `adaptability` INTEGER NOT NULL, `affection_level` INTEGER NOT NULL, `alt_names` TEXT NOT NULL, `child_friendly` INTEGER NOT NULL, `country_code` TEXT NOT NULL, `country_codes` TEXT NOT NULL, `description` TEXT NOT NULL, `dog_friendly` INTEGER NOT NULL, `energy_level` INTEGER NOT NULL, `experimental` INTEGER NOT NULL, `grooming` INTEGER NOT NULL, `hairless` INTEGER NOT NULL, `health_issues` INTEGER NOT NULL, `hypoallergenic` INTEGER NOT NULL, `indoor` INTEGER NOT NULL, `intelligence` INTEGER NOT NULL, `lap` INTEGER NOT NULL, `life_span` TEXT NOT NULL, `name` TEXT NOT NULL, `natural` INTEGER NOT NULL, `origin` TEXT NOT NULL, `rare` INTEGER NOT NULL, `reference_image_id` TEXT NOT NULL, `rex` INTEGER NOT NULL, `shedding_level` INTEGER NOT NULL, `short_legs` INTEGER NOT NULL, `social_needs` INTEGER NOT NULL, `stranger_friendly` INTEGER NOT NULL, `suppressed_tail` INTEGER NOT NULL, `temperament` TEXT NOT NULL, `vocalisation` INTEGER NOT NULL, `weight` TEXT, `wikipedia_url` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "adaptability",
+            "columnName": "adaptability",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "affection_level",
+            "columnName": "affection_level",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alt_names",
+            "columnName": "alt_names",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "child_friendly",
+            "columnName": "child_friendly",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "country_code",
+            "columnName": "country_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "country_codes",
+            "columnName": "country_codes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dog_friendly",
+            "columnName": "dog_friendly",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "energy_level",
+            "columnName": "energy_level",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experimental",
+            "columnName": "experimental",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "grooming",
+            "columnName": "grooming",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hairless",
+            "columnName": "hairless",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "health_issues",
+            "columnName": "health_issues",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hypoallergenic",
+            "columnName": "hypoallergenic",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "indoor",
+            "columnName": "indoor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "intelligence",
+            "columnName": "intelligence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lap",
+            "columnName": "lap",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "life_span",
+            "columnName": "life_span",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "natural",
+            "columnName": "natural",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "origin",
+            "columnName": "origin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rare",
+            "columnName": "rare",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reference_image_id",
+            "columnName": "reference_image_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rex",
+            "columnName": "rex",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "shedding_level",
+            "columnName": "shedding_level",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "short_legs",
+            "columnName": "short_legs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "social_needs",
+            "columnName": "social_needs",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stranger_friendly",
+            "columnName": "stranger_friendly",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "suppressed_tail",
+            "columnName": "suppressed_tail",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "temperament",
+            "columnName": "temperament",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vocalisation",
+            "columnName": "vocalisation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "wikipedia_url",
+            "columnName": "wikipedia_url",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '45e907ea513ee3ec488f125a474333a2')"
+    ]
+  }
+}

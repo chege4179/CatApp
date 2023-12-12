@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response
+package com.peterchege.pussycatapp.core.room.entity
 
-import kotlinx.serialization.Serializable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.Weight
 
 
-/*
-Added defaults to every attribute because the api does not return values for
- all cat breeds
- */
-@Serializable
-data class CatBreed(
+@Entity(tableName = "cat_breed")
+data class CatBreedEntity(
+    @PrimaryKey
+    val id: String= "",
     val adaptability: Int= 0,
     val affection_level: Int= 0,
     val alt_names: String = "",
@@ -38,7 +38,7 @@ data class CatBreed(
     val hairless: Int= 0,
     val health_issues: Int= 0,
     val hypoallergenic: Int= 0,
-    val id: String= "",
+
     val indoor: Int= 0,
     val intelligence: Int= 0,
     val lap: Int= 0,

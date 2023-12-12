@@ -24,8 +24,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,14 +41,15 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.SubcomposeAsyncImage
 import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
 import com.peterchege.pussycatapp.core.util.getCatImageById
+import com.peterchege.pussycatapp.domain.models.CatBreedUI
 
 @ExperimentalCoilApi
 @Composable
 fun CatBreedCard(
-    catBreed: CatBreed,
-    onNavigateToBreedScreen: (String) -> Unit
-
-
+    catBreed: CatBreedUI,
+    onNavigateToBreedScreen: (String) -> Unit,
+    saveCatBreed: (CatBreedUI) -> Unit,
+    unSaveCatBreed: (String) -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -83,8 +89,6 @@ fun CatBreedCard(
                     contentDescription = "Cat Images"
                 )
             }
-
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,8 +104,21 @@ fun CatBreedCard(
                 ) {
                     Text(
                         text = catBreed.name,
+                    )
 
+                    IconButton(onClick = {
+                        if (catBreed.isSaved) {
+                            unSaveCatBreed(catBreed.id)
+                        } else {
+                            saveCatBreed(catBreed)
+                        }
+                    }) {
+                        Icon(
+                            imageVector = if (catBreed.isSaved) Icons.Default.BookmarkBorder else Icons.Default.Bookmark,
+                            contentDescription = if (catBreed.isSaved) "Un-save Cat Breed" else "Save Cat Breed"
                         )
+                    }
+
                 }
             }
         }

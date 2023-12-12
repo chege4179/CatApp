@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.domain.repository
+package com.peterchege.pussycatapp.core.di
 
-import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
-import com.peterchege.pussycatapp.core.api.responses.random_cat_response.RandomImageResponse
-import com.peterchege.pussycatapp.core.util.NetworkResult
+import com.peterchege.pussycatapp.domain.use_case.GetAllCatBreedsUseCase
+import com.peterchege.pussycatapp.domain.use_case.GetCatBreedByIdUseCase
+import org.koin.dsl.module
 
-interface ImageRepository {
+val usecaseModule = module{
 
-    suspend fun getRandomImage(): NetworkResult<RandomImageResponse>
-
-    suspend fun getAllCatBreeds(): NetworkResult<List<CatBreed>>
-
-    suspend fun getCatBreedById(breedId: String):NetworkResult<CatBreed>
+    single {
+        GetAllCatBreedsUseCase(repository = get())
+    }
+    single {
+        GetCatBreedByIdUseCase(repository = get())
+    }
 
 }

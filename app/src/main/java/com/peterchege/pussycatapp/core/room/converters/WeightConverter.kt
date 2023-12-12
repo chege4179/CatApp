@@ -13,26 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.di
+package com.peterchege.pussycatapp.core.room.converters
 
-import android.app.Application
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import androidx.room.TypeConverter
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.Weight
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-class PussyCatApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
+class WeightConverter {
 
-        startKoin {
-            androidLogger()
-            androidContext(this@PussyCatApp)
-            modules(
-                databaseModule + jankStatsModule + networkModule +
-                        repositoryModule + repositoryModule + usecaseModule +
-                        viewModelModule
-            )
-        }
+    @TypeConverter
+    fun toString(weight:Weight?):String?{
+        return Json.encodeToString<Weight?>(weight)
     }
-
+    @TypeConverter
+    fun fromString(weightString:String):Weight?{
+        return Json.decodeFromString<Weight?>(weightString)
+    }
 }

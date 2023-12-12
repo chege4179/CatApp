@@ -13,17 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response
+package com.peterchege.pussycatapp.domain.models
 
-import kotlinx.serialization.Serializable
+import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.Weight
 
-
-/*
-Added defaults to every attribute because the api does not return values for
- all cat breeds
- */
-@Serializable
-data class CatBreed(
+data class CatBreedUI(
     val adaptability: Int= 0,
     val affection_level: Int= 0,
     val alt_names: String = "",
@@ -57,5 +51,6 @@ data class CatBreed(
     val temperament: String = "",
     val vocalisation: Int = 0,
     val weight: Weight? = Weight("",""),
-    val wikipedia_url: String = ""
+    val wikipedia_url: String = "",
+    val isSaved:Boolean
 )
