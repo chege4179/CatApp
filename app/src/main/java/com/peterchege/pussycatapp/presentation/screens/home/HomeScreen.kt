@@ -16,11 +16,24 @@
 package com.peterchege.pussycatapp.presentation.screens.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,21 +41,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
-import com.peterchege.pussycatapp.core.util.Screens
 import com.peterchege.pussycatapp.domain.mappers.toCatBreed
 import com.peterchege.pussycatapp.domain.mappers.toUIModel
 import com.peterchege.pussycatapp.domain.repository.NetworkStatus
 import com.peterchege.pussycatapp.presentation.components.CatBreedCard
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     navigateToCatBreedScreen:(String) -> Unit,
 ) {
-    val viewModel = getViewModel<HomeScreenViewModel>()
+    val viewModel = koinViewModel<HomeScreenViewModel>()
     val networkStatus by viewModel.networkStatus.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val savedCatBreeds by viewModel.savedCatBreeds.collectAsStateWithLifecycle()

@@ -39,21 +39,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.peterchege.pussycatapp.core.api.responses.get_cat_breed_by_id_response.CatBreed
-import com.peterchege.pussycatapp.core.util.Screens
 import com.peterchege.pussycatapp.domain.mappers.toCatBreed
-import com.peterchege.pussycatapp.domain.mappers.toUIModel
-import com.peterchege.pussycatapp.domain.repository.NetworkStatus
 import com.peterchege.pussycatapp.presentation.components.CatBreedCard
-import com.peterchege.pussycatapp.presentation.screens.home.HomeScreenUiState
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SavedCatBreedScreen(
     navigateToCatBreedScreen:(String) -> Unit,
 ) {
-    val viewModel = getViewModel<SavedCatBreedScreenViewModel>()
+    val viewModel = koinViewModel<SavedCatBreedScreenViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SavedCatBreedScreenContent(

@@ -51,14 +51,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import com.peterchege.pussycatapp.core.util.getCatImageById
-import org.koin.androidx.compose.getViewModel
-@OptIn(ExperimentalMaterial3Api::class)
+import org.koin.androidx.compose.koinViewModel
+
+
 @Composable
 fun CatBreedScreen(
     navController:NavController,
     breedId:String,
 ){
-    val viewModel = getViewModel<CatBreedScreenViewModel>()
+    val viewModel = koinViewModel<CatBreedScreenViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = breedId){

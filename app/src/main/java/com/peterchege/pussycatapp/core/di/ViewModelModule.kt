@@ -18,7 +18,7 @@ package com.peterchege.pussycatapp.core.di
 import com.peterchege.pussycatapp.presentation.screens.cat_breed.CatBreedScreenViewModel
 import com.peterchege.pussycatapp.presentation.screens.home.HomeScreenViewModel
 import com.peterchege.pussycatapp.presentation.screens.saved.SavedCatBreedScreenViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
